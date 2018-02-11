@@ -8,9 +8,9 @@ const babelOptions = JSON.parse(readFileSync('../.babelrc'))
 
 export default function (code, tests, options = {}) {
   code = `
-    (function(require, process, global) {
+    (function(require, process, child_process, global) {
       ${code}
-    })(() => {}, null, null)
+    })(() => {}, null, null, null)
   `
   const compiledCode = transform(code, babelOptions)
 
@@ -44,9 +44,9 @@ export default function (code, tests, options = {}) {
       fs.writeFileSync('${tempTestLogFile}', JSON.stringify(costs))
     })
 
-    ;(function(require, process, global) {
+    ;(function(require, process, child_process, global) {
       ${tests}
-    })(() => {}, null, null)
+    })(() => {}, null, null, null)
   `
   const compiledTests = transform(tests, babelOptions)
 
