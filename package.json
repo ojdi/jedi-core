@@ -1,0 +1,25 @@
+{
+  "name": "jedi-core",
+  "version": "0.1.0",
+  "description": "Online judge for node",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "babel src -d lib --watch",
+    "lint": "eslint src/**/*.js --fix"
+  },
+  "author": "akira-cn",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^4.17.0",
+    "eslint-config-75team": "^1.0.2"
+  },
+  "dependencies": {
+    "ava": "^0.25.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}
