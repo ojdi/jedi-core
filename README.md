@@ -4,9 +4,9 @@
 
 接受 code、tests、timeLimit（缺省为30秒） 作为参数
 
-code是提交的模块代码，必须包含module.exports，而且类型要是函数。模块中不能使用process和require。
+code是提交的模块代码，必须包含module.exports，而且类型要是函数。模块中不能使用process、child_process和require。
 
-tests是测试用例，支持[ava](https://github.com/avajs/ava)，其中也不能使用process和require。
+tests是测试用例，支持[ava](https://github.com/avajs/ava)，其中也不能使用process、child_process和require。
 
 在tests中，默认使用app，对应code中的module.exports导出的函数。
 
