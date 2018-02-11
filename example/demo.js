@@ -2,6 +2,7 @@ const jedi = require('../lib')
 
 const code = `
 module.exports = function (x, y) {
+  // x()
   return x + y
 }
 `
@@ -22,7 +23,7 @@ test('two', t => {
 
   const r = await res.promise
   if(r.err) {
-    console.error(r.err)
+    console.error(r.status)
   } else {
     console.log(r)
   }

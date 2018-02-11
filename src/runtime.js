@@ -14,7 +14,8 @@ export default function ({id, srcFile, testFile, logFile}, timeLimit = 30000) {
   const cmdPath = `${__dirname}/../node_modules/ava/cli.js`
   const path = `${__dirname}/../temp`
   const forked = fork(cmdPath, [`${path}/${testFile}`], {silent: true})
-  let errMsg = ''
+  let errMsg = '',
+    status
 
   const timer = setTimeout(() => {
     errMsg = `Time limit exceed: ${timeLimit}`
@@ -37,12 +38,15 @@ export default function ({id, srcFile, testFile, logFile}, timeLimit = 30000) {
 
   forked.on('close', (code) => {
     clearTimeout(timer)
-    let data = []
+    let data = null
     if(code === 0) {
       errMsg = ''
+      status = 'passed'
       data = JSON.parse(fs.readFileSync(`${path}/${logFile}`))
+    } else {
+      status = 'failed'
     }
-    deferred.resolve({err: errMsg, data})
+    deferred.resolve({err: errMsg, data, status})
     ;[srcFile, testFile, logFile].forEach((file) => {
       file = `${path}/${file}`
       if(fs.existsSync(file)) {

@@ -14,6 +14,11 @@ const defaultTest = `
 `
 
 module.exports = function (code = defaultCode, tests = defaultTest, timeLimit = 30000) {
-  const res = source(code, tests)
+  let res
+  try {
+    res = source(code, tests)
+  } catch (ex) {
+    return {promise: Promise.resolve({err: ex.message, data: null, status: 'compile failed'}), context: null}
+  }
   return runtime(res, timeLimit)
 }
