@@ -15,7 +15,7 @@ jedi本身返回一个带有context和promise的defer对象，context中包含�
 测试异步执行，执行完成之后defer.promise返回执行结果，如果测试不通过，那么返回结果的err对象不为空，否则返回对象的err为空，且data数组返回每个case调用时消耗的时间、内存和context信息。
 
 ```js
-const jedi = require('../lib')
+const jedi = require('jedi')
 
 const code = `
 module.exports = function (x, y) {
