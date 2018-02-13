@@ -48,3 +48,4 @@ jsconfig.json
 esconfig.json
 
 temp/*.js
+.jedi-tests

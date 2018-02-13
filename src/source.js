@@ -2,11 +2,18 @@
 
 import {transform} from 'babel-core'
 
-import {readFileSync, writeFileSync} from 'fs'
+import {readFileSync, writeFileSync, existsSync} from 'fs'
 
-const babelOptions = JSON.parse(readFileSync('../.babelrc'))
+let babelOptions = {
+  presets: ['env'],
+  plugins: ['transform-runtime'],
+}
 
-export default function (id, code, tests, options = {}) {
+if(existsSync('../.babelrc')) {
+  babelOptions = JSON.parse(readFileSync('../.babelrc'))
+}
+
+export default function (id, code, tests, tmpPath) {
   code = `
     (function(require, process, child_process, global) {
       ${code}
@@ -14,9 +21,9 @@ export default function (id, code, tests, options = {}) {
   `
   const compiledCode = transform(code, babelOptions)
 
-  const tempFile = `${__dirname}/../temp/${id}.js`
-  const tempTestFile = `${__dirname}/../temp/${id}.test.js`
-  const tempTestLogFile = `${__dirname}/../temp/${id}.log.js`
+  const tempFile = `${process.cwd()}/${tmpPath}/${id}.js`
+  const tempTestFile = `${process.cwd()}/${tmpPath}/${id}.test.js`
+  const tempTestLogFile = `${process.cwd()}/${tmpPath}/${id}.log.js`
 
   writeFileSync(tempFile, compiledCode.code)
 
@@ -53,8 +60,8 @@ export default function (id, code, tests, options = {}) {
 
   return {
     id,
-    srcFile: `${id}.js`,
-    testFile: `${id}.test.js`,
-    logFile: `${id}.log.js`,
+    srcFile: `${tmpPath}/${id}.js`,
+    testFile: `${tmpPath}/${id}.test.js`,
+    logFile: `${tmpPath}/${id}.log.js`,
   }
 }

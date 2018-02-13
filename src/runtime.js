@@ -1,5 +1,6 @@
 const {fork} = require('child_process')
 const fs = require('fs')
+const findNodeModules = require('find-node-modules')
 
 function defer(context = null) {
   const ret = {context}
@@ -11,9 +12,17 @@ function defer(context = null) {
 }
 
 export default function ({id, srcFile, testFile, logFile}, timeLimit = 30000) {
-  const cmdPath = `${__dirname}/../node_modules/ava/cli.js`
-  const path = `${__dirname}/../temp`
-  const forked = fork(cmdPath, [`${path}/${testFile}`], {silent: true})
+  let cmdPath
+  const modulePaths = findNodeModules()
+
+  for(let i = 0; i < modulePaths.length; i++) {
+    cmdPath = `${modulePaths[i]}/ava/cli.js`
+    if(fs.existsSync(cmdPath)) {
+      break
+    }
+  }
+
+  const forked = fork(cmdPath, [`${process.cwd()}/${testFile}`], {silent: true})
   let errMsg = '',
     status
 
@@ -42,13 +51,13 @@ export default function ({id, srcFile, testFile, logFile}, timeLimit = 30000) {
     if(code === 0) {
       errMsg = ''
       status = 'passed'
-      data = JSON.parse(fs.readFileSync(`${path}/${logFile}`))
+      data = JSON.parse(fs.readFileSync(logFile))
     } else {
       status = 'failed'
     }
     deferred.resolve({id, err: errMsg, data, status})
     ;[srcFile, testFile, logFile].forEach((file) => {
-      file = `${path}/${file}`
+      file = `${process.cwd()}/${file}`
       if(fs.existsSync(file)) {
         fs.unlinkSync(file)
       }
