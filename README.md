@@ -97,7 +97,7 @@ commitAction() {
   // 如果是练习或测试，这里还需要再存一个相应的练习或测试的ID
   const insertID = await answers.add({problemID: id, answerID, code, status: 'pending', err: ''})
 
-  res.promise.then(({status, err, data}) => {
+  res.promise.then(async ({status, err, data}) => {
     if(status === 'passed') {
       // 运行结果无误，检查时间和内存是否超过要求
       if(!data.every(({heapUsed}) => heapUsed <= memoryLimit)){
