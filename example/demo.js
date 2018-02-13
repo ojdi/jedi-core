@@ -18,12 +18,12 @@ test('two', t => {
 `
 
 ;(async function () {
-  const res = jedi(code, tests, 10000)
+  const res = jedi({code, tests, timeout: 10000})
   console.log(res)
 
   const r = await res.promise
   if(r.err) {
-    console.error(r.status)
+    console.error(`${r.status}: \n${r.err}`)
   } else {
     console.log(r)
   }

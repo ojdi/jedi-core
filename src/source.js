@@ -6,7 +6,7 @@ import {readFileSync, writeFileSync} from 'fs'
 
 const babelOptions = JSON.parse(readFileSync('../.babelrc'))
 
-export default function (code, tests, options = {}) {
+export default function (id, code, tests, options = {}) {
   code = `
     (function(require, process, child_process, global) {
       ${code}
@@ -14,10 +14,9 @@ export default function (code, tests, options = {}) {
   `
   const compiledCode = transform(code, babelOptions)
 
-  const tempFileName = `c${String(Math.random()).slice(2)}`
-  const tempFile = `${__dirname}/../temp/${tempFileName}.js`
-  const tempTestFile = `${__dirname}/../temp/${tempFileName}.test.js`
-  const tempTestLogFile = `${__dirname}/../temp/${tempFileName}.log.js`
+  const tempFile = `${__dirname}/../temp/${id}.js`
+  const tempTestFile = `${__dirname}/../temp/${id}.test.js`
+  const tempTestLogFile = `${__dirname}/../temp/${id}.log.js`
 
   writeFileSync(tempFile, compiledCode.code)
 
@@ -53,9 +52,9 @@ export default function (code, tests, options = {}) {
   writeFileSync(tempTestFile, compiledTests.code)
 
   return {
-    id: tempFileName,
-    srcFile: `${tempFileName}.js`,
-    testFile: `${tempFileName}.test.js`,
-    logFile: `${tempFileName}.log.js`,
+    id,
+    srcFile: `${id}.js`,
+    testFile: `${id}.test.js`,
+    logFile: `${id}.log.js`,
   }
 }

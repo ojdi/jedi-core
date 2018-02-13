@@ -13,12 +13,15 @@ const defaultTest = `
   })
 `
 
-module.exports = function (code = defaultCode, tests = defaultTest, timeLimit = 30000) {
+module.exports = function ({id = `c${String(Math.random()).slice(2)}`,
+  code = defaultCode,
+  tests = defaultTest,
+  timeout = 30000}) {
   let res
   try {
-    res = source(code, tests)
+    res = source(id, code, tests)
   } catch (ex) {
-    return {promise: Promise.resolve({err: ex.message, data: null, status: 'compile failed'}), context: null}
+    return {promise: Promise.resolve({id, err: ex.message, data: [], status: 'compile failed'}), context: {id}}
   }
-  return runtime(res, timeLimit)
+  return runtime(res, timeout)
 }

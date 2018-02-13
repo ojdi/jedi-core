@@ -46,7 +46,7 @@ export default function ({id, srcFile, testFile, logFile}, timeLimit = 30000) {
     } else {
       status = 'failed'
     }
-    deferred.resolve({err: errMsg, data, status})
+    deferred.resolve({id, err: errMsg, data, status})
     ;[srcFile, testFile, logFile].forEach((file) => {
       file = `${path}/${file}`
       if(fs.existsSync(file)) {
