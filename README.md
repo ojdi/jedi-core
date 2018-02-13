@@ -82,6 +82,8 @@ test('two', t => {
 
 首先根据提交的代码查找对应的tests，然后将代码和tests传给jedi，根据返回的内容中的context往数据库中写入记录，并响应用户请求。等待返回的promise成功后，更新context写入的数据记录。
 
+以[thinkJS](https://thinkjs.org/)为例：
+
 ```js
 commitAction() {
   const {id, code} = this.get()
