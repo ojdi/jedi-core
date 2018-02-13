@@ -17,7 +17,7 @@ jedi本身返回一个带有context和promise的defer对象，context中包含�
 测试返回的结果里面有三种字符串状态，分别是failed、passed和compile failed，分别表示运行结果不正确、运行结果正确和编译不通过。
 
 ```js
-const jedi = require('jedi')
+const jedi = require('jedi-core')
 
 const code = `
 module.exports = function (x, y) {
