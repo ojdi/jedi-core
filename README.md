@@ -109,5 +109,7 @@ commitAction() {
     // 运行完毕，更新答题状态
     await answers.where({id: insertID}).update({status, err})
   })
+
+  return this.success({answerID: answerID, problemID: id})
 }
 ```
