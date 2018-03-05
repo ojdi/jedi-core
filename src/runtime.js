@@ -22,7 +22,10 @@ export default function ({id, srcFile, testFile, logFile}, timeLimit = 30000) {
     }
   }
 
-  const forked = fork(cmdPath, [`${process.cwd()}/${testFile}`], {silent: true})
+  const forked = fork(cmdPath, [`${process.cwd()}/${testFile}`], {
+    execArgv: ['--inspect=0'],
+    silent: true,
+  })
   let errMsg = '',
     status
 
